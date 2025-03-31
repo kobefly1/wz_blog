@@ -15,6 +15,7 @@ import (
 )
 
 func init() {
+	//初始化网络，应用和数据库配置
 	err := setupSetting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
@@ -35,6 +36,9 @@ func init() {
 // @description Go 语言编程之旅：一起用 Go 做项目
 // @termsOfService https://github.com/go-programming-tour-book
 func main() {
+	global.Logger.Info(global.ServerSetting)
+	global.Logger.Info(global.AppSetting)
+	global.Logger.Info(global.DatabaseSetting)
 	global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy", "blog-service")
 	router := routers.NewRouter()
 	s := &http.Server{
@@ -44,6 +48,7 @@ func main() {
 		WriteTimeout:   global.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
+	//监听
 	err := s.ListenAndServe()
 	if err != nil {
 		global.Logger.Errorf("err:%s", err)
@@ -56,14 +61,19 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
+	//将网络配置同步到结构体
 	err = setting.ReadSection("Server", &global.ServerSetting)
 	if err != nil {
 		return err
 	}
+
+	//将应用配置同步到结构体
 	err = setting.ReadSection("App", &global.AppSetting)
 	if err != nil {
 		return err
 	}
+
+	//将数据库配置同步到结构体
 	err = setting.ReadSection("Database", &global.DatabaseSetting)
 
 	err = setting.ReadSection("JWT", &global.JWTSetting)

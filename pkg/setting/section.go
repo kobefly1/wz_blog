@@ -42,7 +42,9 @@ type JWTSettingS struct {
 	Expire time.Duration
 }
 
+// 将json字符串k转换成结构体，然后赋值给v
 func (s *Setting) ReadSection(k string, v interface{}) error {
+	//将json字符串转换为接口类型
 	err := s.vp.UnmarshalKey(k, v)
 	if err != nil {
 		return err

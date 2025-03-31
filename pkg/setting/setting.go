@@ -8,6 +8,7 @@ type Setting struct {
 	vp *viper.Viper
 }
 
+// 读取config.yaml里面的文件
 func NewSetting() (*Setting, error) {
 	vp := viper.New()
 	vp.SetConfigName("config")
